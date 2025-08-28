@@ -1,5 +1,6 @@
 # ha-dashboard-meshcore-messages
 A simple ha automation that will make it possible to read the last 5 messages  off a meshcore companion in a dashboard
+I used this meshcore integration in HA: https://github.com/meshcore-dev/meshcore-ha
 
 To use this automation you need to add 5 helpers in HA
 name them:
