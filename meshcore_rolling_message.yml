@@ -1,0 +1,46 @@
+alias: MeshCore rolling log 5 berichten
+description: ""
+triggers:
+  - event_type: meshcore_raw_event
+    event_data:
+      event_type: EventType.CHANNEL_MSG_RECV
+    trigger: event
+actions:
+  - variables:
+      new_msg: >-
+        {{ 'Event type: ' ~ trigger.event.data.event_type ~ ', \nPayload type: '
+        ~ trigger.event.data.payload.type ~ ', \nBericht: ' ~
+        trigger.event.data.payload.text ~ ', \nAfzender timestamp: ' ~
+        (trigger.event.data.payload.sender_timestamp |
+        timestamp_custom('%Y-%m-%d %H:%M:%S', true)) ~ ', \nSNR: ' ~
+        trigger.event.data.payload.SNR ~ ', \nKanaal index: ' ~
+        trigger.event.data.payload.channel_idx ~ ', \nPath length: ' ~
+        trigger.event.data.payload.path_len ~ ', \nEvent ontvangen op: ' ~
+        (trigger.event.data.timestamp | timestamp_custom('%Y-%m-%d %H:%M:%S',
+        true)) }}
+  - target:
+      entity_id: input_text.meshcore_last_message_5
+    data:
+      value: "{{ states('input_text.meshcore_last_message_4') }}"
+    action: input_text.set_value
+  - target:
+      entity_id: input_text.meshcore_last_message_4
+    data:
+      value: "{{ states('input_text.meshcore_last_message_3') }}"
+    action: input_text.set_value
+  - target:
+      entity_id: input_text.meshcore_last_message_3
+    data:
+      value: "{{ states('input_text.meshcore_last_message_2') }}"
+    action: input_text.set_value
+  - target:
+      entity_id: input_text.meshcore_last_message_2
+    data:
+      value: "{{ states('input_text.meshcore_last_message_1') }}"
+    action: input_text.set_value
+  - target:
+      entity_id: input_text.meshcore_last_message_1
+    data:
+      value: "{{ new_msg }}"
+    action: input_text.set_value
+mode: single

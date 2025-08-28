@@ -1,0 +1,22 @@
+type: markdown
+content: |2
+    **Laatste MeshCore berichten:**
+
+    {% for i in range(1,6) %}
+    {% set msg = states('input_text.meshcore_last_message_' ~ i) %}
+    {% if msg %}
+  **Message {{ i }}️⃣:**  
+
+  {{ msg
+     | replace('Kanaal index', '📡 Kanaal')
+     | replace('EventType.CHANNEL_MSG_RECV' , 'Bericht ontvangen ')
+     | replace ('Bericht' , '\nBericht')
+     | replace('SNR', '🔊 SNR')
+     | replace('Afzender timestamp', '\n⏱️ Event Verzonden')
+     | replace('Path length', '➡️ Path lenght')
+     | replace('Event ontvangen op', '⏱️ Ontvangen')
+     | replace('**','') }}
+
+  ---
+    {% endif %}
+    {% endfor %}
